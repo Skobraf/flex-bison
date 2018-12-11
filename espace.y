@@ -1,5 +1,8 @@
 %{
 int yylex();
+int yyerror(char *s){
+fprintf(stderr,"%s\n",s);
+}
 %}
 %token uni concat etoile lettre
 %%
