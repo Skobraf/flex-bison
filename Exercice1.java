@@ -1,124 +1,103 @@
-package ma.fsr.smi.tp3;
-
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class Exercice1 {
+	/*
+	 * 1 - Le composant primaire : JFrame
+	 *     Deux étiquetes : JLabel 
+	 *     Deux champs de texte : JTextField
+	 *     Un boutton : JButton
+	 * 
+	 * 2 - On peut subdiviser l'interface en trois lignes et deux colonnes.
+	 * 
+	 * 3 - Le cadre global JFrame avec gestionnaire de placement BordeLayout
+	 *     Un panneau interne avec gestionnaire de placement GridLayout
+	 *     Un boutton
+	 */
+	static class Convertisseur1 extends JPanel {
 
-	@SuppressWarnings("serial")
-	static class Calculatrice extends JPanel {
+		JLabel eDhs, eEuros;
+		JTextField tDhs, tEuros;
+		JButton bConversion;
+		JPanel panneau;
 
-		private JPanel pCenter, pEast;
-		private String bCenter[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "=" };
-		private String bEast[] = { "+", "-", "*", "/" };
+		public Convertisseur1() {
 
-		Calculatrice() {
+			eDhs = new JLabel("Valeur en Dhs");
+			eEuros = new JLabel("Valeur en Euros");
 
-			pCenter = new JPanel(new GridLayout(4, 0));
-			for (String s : bCenter) {
-				pCenter.add(new JButton(s));
-			}
+			tDhs = new JTextField(15);
+			tEuros = new JTextField(15);
 
-			pEast = new JPanel(new GridLayout(4, 0));
-			for (String s : bEast) {
-				pEast.add(new JButton(s));
-			}
+			bConversion = new JButton("Convertir");
 
-			setLayout(new BorderLayout(5, 5));
+			panneau = new JPanel(new GridLayout(2, 2));
 
-			add(pCenter, "Center");
-			add(new JTextField(), "North");
-			add(pEast, "East");
+			panneau.add(eDhs);
+			panneau.add(tDhs);
+			panneau.add(eEuros);
+			panneau.add(tEuros);
+
+			setLayout(new BorderLayout());
+
+			add(panneau, BorderLayout.NORTH);
+			add(bConversion, BorderLayout.SOUTH);
 		}
 	}
 
-	@SuppressWarnings("serial")
-	static class Calculatrice2 extends JFrame {
+	static class Convertisseur2 extends JFrame {
 
-		private JPanel pPrinc, pCenter, pEast;
-		GridBagConstraints gc = new GridBagConstraints();
+		public Convertisseur2() {
+			JPanel p1 = new JPanel(new BorderLayout());
+			p1.add(new JLabel("Euros:"), BorderLayout.WEST);
+			p1.add(new JTextField(7), BorderLayout.EAST);
 
-		Calculatrice2() {
+			JPanel p2 = new JPanel(new BorderLayout());
+			p2.add(new JButton("Euro -> Dh"), BorderLayout.WEST);
+			p2.add(new JButton("Dh -> Euro"), BorderLayout.EAST);
 
-			pPrinc = new JPanel(new BorderLayout(2, 2));
-			pCenter = new JPanel(new GridBagLayout());
-			pEast = new JPanel(new GridBagLayout());
+			JPanel p3 = new JPanel(new BorderLayout());
+			p3.add(new JLabel("Dhs:"), BorderLayout.WEST);
+			p3.add(new JTextField(7), BorderLayout.EAST);
 
-			gc.fill = GridBagConstraints.BOTH;
-			gc.insets = new Insets(0, 0, 0, 0);
-			gc.ipady = gc.anchor = GridBagConstraints.CENTER;
-			
-			gc.weightx = 3;
-			gc.weighty = 4;
+			JPanel p = new JPanel();
+			p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < 3; j++) {
-					gc.gridx = i;
-					gc.gridy = j;
-					pCenter.add(new JButton(String.valueOf(i * 3 + (j + 1))), gc);
-				}
-			}
+			p.add(p3);
+			p.add(p2);
+			p.add(p1);
 
-			gc.gridx = 0;
-			gc.gridy = 3;
-			pCenter.add(new JButton("0"), gc);
+			setContentPane(p);
 
-			gc.gridwidth = 2;
-			gc.gridx = 1;
-			gc.gridy = 3;
-			pCenter.add(new JButton("="), gc);
-			
-			gc.weightx = 2;
-			
-			gc.gridwidth = 2;
-			gc.gridx = 0;
-			gc.gridy = 0;
-			pEast.add(new JButton("AC"), gc);
-
-			gc.gridwidth = 1;
-
-			String tabS[] = { "+", "*", "-", "/", "(", ")" };
-
-			for (int i = 1, k = 0; i <= 3; i++) {
-				for (int j = 0; j < 2; j++) {
-					gc.gridx = j;
-					gc.gridy = i;
-					pEast.add(new JButton(tabS[k++]), gc);
-				}
-			}
-
-			pPrinc.add(pCenter, "Center");
-			pPrinc.add(pEast, "East");
-			pPrinc.add(new JTextField(), "North");
-
-			setContentPane(pPrinc);
+			setTitle("Convertisseur de device");
 			setVisible(true);
 			pack();
-			setLocationRelativeTo(null);
 			setDefaultCloseOperation(3);
+			setLocationRelativeTo(null);
 		}
 	}
 
 	public static void main(String[] args) {
 
-		// JFrame f = new JFrame("Calculatrice");
-		//
-		// f.setContentPane(new Calculatrice());
-		//
-		// f.setVisible(true);
-		// f.setLocationRelativeTo(null);
-		// f.setSize(250, 200);
-		// f.setDefaultCloseOperation(3);
+		JFrame f = new JFrame("Conversion de devise");
 
-		new Calculatrice2();
+		f.add(new Convertisseur1());
+
+		f.setTitle("Convertisseur de device");
+		f.setVisible(true);
+		f.pack();
+		f.setDefaultCloseOperation(3);
+		f.setLocationRelativeTo(null);
+
+		new Convertisseur2();
 	}
 
 }
